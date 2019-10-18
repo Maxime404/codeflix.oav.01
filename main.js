@@ -35,15 +35,12 @@ let jsonContent = '';
 
 if (typeof jsonContent === 'object' && jsonContent !== '') {
     const shortFilename = filename.split('/').pop();
-    const jsonData = JSON.stringify(jsonContent);
+    const jsonData = JSON.stringify(jsonContent, null, 2);
 
     var timestamp = Math.round(new Date().getTime() / 1000);
     
     (!fs.writeFileSync(`${filename}.${timestamp}.json`, jsonData))
         ? console.log(`${shortFilename}.json was created !`)
         : console.log(`Error to creat ${shortFilename}.json file...`);
-
-    process.exit(0);
-} else {
-    process.exit(0);
 }
+process.exit(0);
