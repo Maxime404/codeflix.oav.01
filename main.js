@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-const parseIni = require('./parseIni.js')
-const parseEnv = require("./parseEnv")
+const parseIni = require('./parseIni.js');
+const parseEnv = require("./parseEnv");
+const jsonWriter = require("./jsonWriter.js");
 
 //process.argv get an array composed of 2 parts then the argument(s)
 //So, process.argv.slice(2) get the third part, argument(s)
@@ -33,14 +34,6 @@ let jsonContent = '';
     : (extension === 'env') ? jsonContent = parseEnv(content)
         : console.log(`The file's extension need to be .env or .ini, the current extension is .${extension}`);
 
-if (typeof jsonContent === 'object' && jsonContent !== '') {
-    const shortFilename = filename.split('/').pop();
-    const jsonData = JSON.stringify(jsonContent, null, 2);
+jsonWriter(jsonContent, filename);
 
-    var timestamp = Math.round(new Date().getTime() / 1000);
-    
-    (!fs.writeFileSync(`${filename}.${timestamp}.json`, jsonData))
-        ? console.log(`${shortFilename}.json was created !`)
-        : console.log(`Error to creat ${shortFilename}.json file...`);
-}
 process.exit(0);
